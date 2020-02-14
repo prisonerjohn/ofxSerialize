@@ -1,9 +1,9 @@
 #include "ofxSerialize.h"
 
 //--------------------------------------------------------------
-inline nlohmann::json & ofSerialize(nlohmann::json & json, const ofEasyCam & easyCam, const string & name)
+inline nlohmann::json& ofSerialize(nlohmann::json& json, const ofEasyCam& easyCam, const std::string& name)
 {
-    auto & jsonGroup = ofSerialize(json, (ofCamera &)easyCam, name);
+    auto& jsonGroup = ofSerialize(json, (ofCamera&)easyCam, name);
 
     jsonGroup["target"] = ofToString(easyCam.getTarget().getPosition());
     jsonGroup["distance"] = easyCam.getDistance();
@@ -19,7 +19,7 @@ inline nlohmann::json & ofSerialize(nlohmann::json & json, const ofEasyCam & eas
 }
 
 //--------------------------------------------------------------
-inline const nlohmann::json & ofDeserialize(const nlohmann::json & json, ofEasyCam & easyCam, const string & name)
+inline const nlohmann::json& ofDeserialize(const nlohmann::json& json, ofEasyCam& easyCam, const std::string& name)
 {
     if (!name.empty() && !json.count(name))
     {
@@ -29,7 +29,7 @@ inline const nlohmann::json & ofDeserialize(const nlohmann::json & json, ofEasyC
 
     easyCam.setAutoDistance(false);
 
-    const auto & jsonGroup = name.empty() ? json : json[name];
+    const auto& jsonGroup = name.empty() ? json : json[name];
 
     try
     {
@@ -52,20 +52,20 @@ inline const nlohmann::json & ofDeserialize(const nlohmann::json & json, ofEasyC
         }
         if (jsonGroup.count("inertiaEnabled")) jsonGroup["inertiaEnabled"] ? easyCam.enableInertia() : easyCam.disableInertia();
     }
-    catch (std::exception & exc)
+    catch (std::exception& exc)
     {
         ofLogError(__FUNCTION__) << exc.what();
     }
 
-    ofDeserialize(jsonGroup, (ofCamera &)easyCam);
+    ofDeserialize(jsonGroup, (ofCamera&)easyCam);
 
     return jsonGroup;
 }
 
 //--------------------------------------------------------------
-inline nlohmann::json & ofSerialize(nlohmann::json & json, const ofCamera & camera, const string & name)
+inline nlohmann::json& ofSerialize(nlohmann::json& json, const ofCamera& camera, const std::string& name)
 {
-    auto & jsonGroup = ofSerialize(json, (ofNode &)camera, name);
+    auto& jsonGroup = ofSerialize(json, (ofNode&)camera, name);
 
     jsonGroup["fov"] = camera.getFov();
     jsonGroup["nearClip"] = camera.getNearClip();
@@ -79,7 +79,7 @@ inline nlohmann::json & ofSerialize(nlohmann::json & json, const ofCamera & came
 }
 
 //--------------------------------------------------------------
-inline const nlohmann::json & ofDeserialize(const nlohmann::json & json, ofCamera & camera, const string & name)
+inline const nlohmann::json& ofDeserialize(const nlohmann::json& json, ofCamera& camera, const std::string& name)
 {
     if (!name.empty() && !json.count(name))
     {
@@ -87,7 +87,7 @@ inline const nlohmann::json & ofDeserialize(const nlohmann::json & json, ofCamer
         return json;
     }
 
-    const auto & jsonGroup = name.empty() ? json : json[name];
+    const auto& jsonGroup = name.empty() ? json : json[name];
 
     try
     {
@@ -103,20 +103,20 @@ inline const nlohmann::json & ofDeserialize(const nlohmann::json & json, ofCamer
         }
         jsonGroup["ortho"] ? camera.enableOrtho() : camera.disableOrtho();
     }
-    catch (std::exception & exc)
+    catch (std::exception& exc)
     {
         ofLogError(__FUNCTION__) << exc.what();
     }
 
-    ofDeserialize(jsonGroup, (ofNode &)camera);
+    ofDeserialize(jsonGroup, (ofNode&)camera);
 
     return jsonGroup;
 }
 
 //--------------------------------------------------------------
-inline nlohmann::json & ofSerialize(nlohmann::json & json, const ofNode & node, const string & name)
+inline nlohmann::json& ofSerialize(nlohmann::json& json, const ofNode& node, const std::string& name)
 {
-    auto & jsonGroup = name.empty() ? json : json[name];
+    auto& jsonGroup = name.empty() ? json : json[name];
 
     jsonGroup["position"] = ofToString(node.getPosition());
     jsonGroup["orientation"] = ofToString(node.getOrientationQuat());
@@ -126,7 +126,7 @@ inline nlohmann::json & ofSerialize(nlohmann::json & json, const ofNode & node, 
 }
 
 //--------------------------------------------------------------
-inline const nlohmann::json & ofDeserialize(const nlohmann::json & json, ofNode & node, const string & name)
+inline const nlohmann::json& ofDeserialize(const nlohmann::json& json, ofNode& node, const std::string& name)
 {
     if (!name.empty() && !json.count(name))
     {
@@ -134,7 +134,7 @@ inline const nlohmann::json & ofDeserialize(const nlohmann::json & json, ofNode 
         return json;
     }
 
-    const auto & jsonGroup = name.empty() ? json : json[name];
+    const auto& jsonGroup = name.empty() ? json : json[name];
     
     if (jsonGroup.count("position"))
     {
