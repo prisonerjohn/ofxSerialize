@@ -154,3 +154,35 @@ inline const nlohmann::json& ofDeserialize(const nlohmann::json& json, ofNode& n
 
 	return jsonGroup;
 }
+
+//--------------------------------------------------------------
+inline nlohmann::json& ofSerialize(nlohmann::json& json, const glm::mat4& mat, const std::string& name)
+{
+	auto& jsonGroup = name.empty() ? json : json[name];
+
+	for (int i = 0; i < 4; ++i)
+	{
+		jsonGroup.push_back(ofToString(mat[i]));
+	}
+
+	return jsonGroup;
+}
+
+//--------------------------------------------------------------
+inline const nlohmann::json& ofDeserialize(const nlohmann::json& json, glm::mat4& mat, const std::string& name)
+{
+	if (!name.empty() && !json.count(name))
+	{
+		ofLogWarning(__FUNCTION__) << "Name " << name << " not found in JSON!";
+		return json;
+	}
+
+	const auto& jsonGroup = name.empty() ? json : json[name];
+
+	for (int i = 0; i < 4; ++i)
+	{
+		mat[i] = ofFromString<glm::vec4>(jsonGroup.at(i));
+	}
+
+	return jsonGroup;
+}
